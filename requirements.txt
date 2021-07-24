@@ -1,0 +1,4 @@
+base45
+cbor2
+pyzbar
+opencv-python
