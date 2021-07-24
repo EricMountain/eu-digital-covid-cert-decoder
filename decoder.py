@@ -45,8 +45,6 @@ class Scanner:
             barcode_value = barcode.data.decode("utf-8")
 
             if barcode.type == "QRCODE":
-                print('Barcode type:', barcode.type)
-                print('Barcode number:', barcode_value)
                 return barcode_value
 
         return None
@@ -68,3 +66,4 @@ class Scanner:
 
 scanner = Scanner()
 cert = scanner.run()
+print(f"QRCode content: {cert}")
