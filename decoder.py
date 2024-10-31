@@ -67,3 +67,27 @@ class Scanner:
 scanner = Scanner()
 cert = scanner.run()
 print(f"QRCode content: {cert}")
+
+b45data = cert.replace("HC1:", "")
+print()
+print(f"Base 45 string: {b45data}")
+
+zlibdata = base45.b45decode(b45data)
+print()
+print(f"Result of base 45 decode: {zlibdata}")
+
+cbordata = zlib.decompress(zlibdata)
+print()
+print(f"Result of zlib decompression: {cbordata}")
+
+decoded = cbor2.loads(cbordata)
+print()
+print(f"Result of CBOR decoding: {decoded}")
+
+print()
+print(" -- Payload")
+payload = cbor2.loads(decoded.value[2])
+print(f"1: issuer of cert: {payload[1]}")
+print(f"6: cert issue date: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(payload[6]))}")
+print(f"4: cert expiry date: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(payload[4]))}")
+print(f"-260: payload of cert: {pprint.pformat(payload[-260])}")
